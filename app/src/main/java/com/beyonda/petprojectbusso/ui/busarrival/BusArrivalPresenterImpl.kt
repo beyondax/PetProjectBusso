@@ -6,8 +6,9 @@ import com.beyonda.petprojectbusso.network.BussoEndpoint
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class BusArrivalPresenterImpl constructor(
+class BusArrivalPresenterImpl @Inject constructor(
     private val bussoEndpoint: BussoEndpoint
 ) : BasePresenter<View, BusArrivalViewBinder>(),
     BusArrivalPresenter {

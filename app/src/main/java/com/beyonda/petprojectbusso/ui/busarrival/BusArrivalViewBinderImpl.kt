@@ -6,10 +6,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.beyonda.petprojectbusso.R
 import com.google.android.material.snackbar.Snackbar
+import javax.inject.Inject
 
 
 /** The ViewBinder for the BusArrival screen */
-class BusArrivalViewBinderImpl : BusArrivalViewBinder {
+class BusArrivalViewBinderImpl @Inject constructor() : BusArrivalViewBinder {
 
   private lateinit var busArrivalRecyclerView: RecyclerView
   private val busArrivalsAdapter = BusArrivalListAdapter()

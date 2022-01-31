@@ -6,6 +6,14 @@ import android.location.LocationManager
 import com.beyonda.location.api.model.LocationEvent
 import com.beyonda.location.rx.provideRxLocationObservable
 import com.beyonda.petprojectbusso.permission.GeoLocationPermissionCheckerImpl
+import com.beyonda.petprojectbusso.ui.busarrival.BusArrivalPresenter
+import com.beyonda.petprojectbusso.ui.busarrival.BusArrivalPresenterImpl
+import com.beyonda.petprojectbusso.ui.busarrival.BusArrivalViewBinder
+import com.beyonda.petprojectbusso.ui.busarrival.BusArrivalViewBinderImpl
+import com.beyonda.petprojectbusso.ui.busstop.BusStopListPresenter
+import com.beyonda.petprojectbusso.ui.busstop.BusStopListPresenterImpl
+import com.beyonda.petprojectbusso.ui.busstop.BusStopListViewBinder
+import com.beyonda.petprojectbusso.ui.busstop.BusStopListViewBinderImpl
 import com.beyonda.petprojectbusso.ui.view.main.MainPresenter
 import com.beyonda.petprojectbusso.ui.view.main.MainPresenterImpl
 import com.beyonda.petprojectbusso.ui.view.splash.SplashPresenter
@@ -23,21 +31,17 @@ import io.reactivex.Observable
 @Module(includes = [
     AppModule.Bindings::class
 ])
-class AppModule(
-    private val activity: Activity
-) {
-
+class AppModule {
 
     @Provides
-    fun provideLocationObservable(): Observable<LocationEvent> {
+    fun provideNavigator(activity: Activity): Navigator = NavigatorImpl(activity)
+
+    @Provides
+    fun provideLocationObservable(activity: Activity): Observable<LocationEvent> {
         val locationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         val geoLocationPermissionChecker = GeoLocationPermissionCheckerImpl(activity)
         return provideRxLocationObservable(locationManager, geoLocationPermissionChecker)
-
     }
-
-    @Provides
-    fun provideNavigator(): Navigator = NavigatorImpl(activity)
 
     @Module
     interface Bindings {
@@ -50,5 +54,20 @@ class AppModule(
 
         @Binds
         fun bindMainPresenter(impl: MainPresenterImpl): MainPresenter
+
+        @Binds
+        fun bindBusStopListViewBinder(impl: BusStopListViewBinderImpl): BusStopListViewBinder
+
+        @Binds
+        fun bindBusStopListPresenter(impl: BusStopListPresenterImpl): BusStopListPresenter
+
+        @Binds
+        fun bindBusStopListViewBinderListener(impl: BusStopListPresenterImpl): BusStopListViewBinder.BusStopItemSelectedListener
+
+        @Binds
+        fun bindBusArrivalPresenter(impl: BusArrivalPresenterImpl): BusArrivalPresenter
+
+        @Binds
+        fun bindBusArrivalViewBinder(impl: BusArrivalViewBinderImpl): BusArrivalViewBinder
     }
 }
